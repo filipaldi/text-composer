@@ -5,6 +5,7 @@
 	"minAppVersion": "0.9.12",
 	"description": "A plugin to compile .md documents from linked documents",
 	"author": "Your Name",
-	"authorUrl": "https://yourwebsite.com",
+	"authorUrl": "https://github.com/filipaldi/text-composer-for-obsidian",
 	"isDesktopOnly": false
-}
+  }
+  

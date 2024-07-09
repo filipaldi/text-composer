@@ -81,10 +81,15 @@ var TextComposerPlugin = class extends import_obsidian.Plugin {
       const content = editor.getValue();
       const compiledContent = yield this.replaceLinks(content);
       const currentFile = activeView.file;
-      const newFileName = currentFile.basename + "_compiled.md";
-      const newFilePath = currentFile.parent.path + "/" + newFileName;
-      yield this.app.vault.create(newFilePath, compiledContent);
-      new import_obsidian.Notice(`Compiled document created: ${newFilePath}`);
+      if (currentFile) {
+        const newFileName = currentFile.basename + "_compiled.md";
+        const parentPath = currentFile.parent ? currentFile.parent.path : "";
+        const newFilePath = parentPath + "/" + newFileName;
+        yield this.app.vault.create(newFilePath, compiledContent);
+        new import_obsidian.Notice(`Compiled document created: ${newFilePath}`);
+      } else {
+        new import_obsidian.Notice("No current file found");
+      }
     });
   }
   replaceLinks(content) {

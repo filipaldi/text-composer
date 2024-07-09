@@ -48,13 +48,18 @@ export default class TextComposerPlugin extends Plugin {
 
 		// Get the current file and generate the new file name
 		const currentFile = activeView.file;
-		const newFileName = currentFile.basename + '_compiled.md';
-		const newFilePath = currentFile.parent.path + '/' + newFileName;
+		if (currentFile) {
+			const newFileName = currentFile.basename + '_compiled.md';
+			const parentPath = currentFile.parent ? currentFile.parent.path : '';
+			const newFilePath = parentPath + '/' + newFileName;
 
-		// Create a new file with the compiled content
-		await this.app.vault.create(newFilePath, compiledContent);
+			// Create a new file with the compiled content
+			await this.app.vault.create(newFilePath, compiledContent);
 
-		new Notice(`Compiled document created: ${newFilePath}`);
+			new Notice(`Compiled document created: ${newFilePath}`);
+		} else {
+			new Notice('No current file found');
+		}
 	}
 
 	async replaceLinks(content: string): Promise<string> {
