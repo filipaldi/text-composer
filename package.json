@@ -1,5 +1,5 @@
 {
-	"name": "text-composer-for-obsidian",
+	"name": "text-composer",
 	"version": "1.0.0",
 	"description": "A plugin to compile .md documents from linked documents",
 	"main": "main.js",
