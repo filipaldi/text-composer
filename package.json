@@ -16,8 +16,6 @@
       "jest": "^26.0.0",
       "ts-jest": "^26.0.0"
     },
-    "dependencies": {
-      // Add any runtime dependencies here if needed
-    }
+    "dependencies": {}
   }
   
