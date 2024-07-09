@@ -1,11 +1,11 @@
 {
-	"id": "text-composer-for-obsidian",
+	"id": "text-composer",
 	"name": "Text Composer",
 	"version": "1.0.0",
-	"minAppVersion": "0.9.12",
+	"minAppVersion": "0.13.19",
 	"description": "A plugin to compile .md documents from linked documents",
-	"author": "Your Name",
-	"authorUrl": "https://github.com/filipaldi/text-composer-for-obsidian",
+	"author": "Filip Paldia",
+	"authorUrl": "https://lttrcorp.com",
 	"isDesktopOnly": false
   }
   
