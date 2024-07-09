@@ -7,10 +7,11 @@ if [ -z "$1" ]; then
 fi
 
 VAULT_PATH=$1
-PLUGIN_DIR="$VAULT_PATH/.obsidian/plugins/obsidian-md-compiler"
+PLUGIN_DIR="$VAULT_PATH/.obsidian/plugins/text-composer-for-obsidian"
 
 # Build the project
 echo "Building the project..."
+npm install
 npm run build
 
 # Create the plugin directory if it doesn't exist
@@ -21,5 +22,6 @@ mkdir -p "$PLUGIN_DIR"
 echo "Copying files to $PLUGIN_DIR"
 cp -r dist/* "$PLUGIN_DIR"
 cp manifest.json "$PLUGIN_DIR"
+cp styles.css "$PLUGIN_DIR"
 
 echo "Deployment complete. Enable the plugin in Obsidian to use it."
