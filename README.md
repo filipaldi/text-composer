@@ -53,3 +53,7 @@ Text Composer is a powerful Obsidian plugin that allows you to compile multiple 
 
 ## Conclusion
 Text Composer for Obsidian is a must-have tool for users who need to consolidate their notes into a single document efficiently. By automating the integration of linked documents, it saves time and enhances productivity, making it an essential plugin for your Obsidian workflow.
+
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
