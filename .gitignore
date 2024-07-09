@@ -2,4 +2,3 @@
 *.zip
 /node_modules
 /package-lock.json
-/deploy.sh
