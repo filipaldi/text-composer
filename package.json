@@ -1,0 +1,23 @@
+{
+    "name": "obsidian-md-compiler",
+    "version": "1.0.0",
+    "description": "An Obsidian.md plugin that compiles a .md document from multiple documents linked using the ![[link_to_document]] syntax.",
+    "main": "dist/main.js",
+    "scripts": {
+      "build": "tsc",
+      "test": "jest",
+      "prepare": "npm run build"
+    },
+    "author": "Your Name",
+    "license": "MIT",
+    "devDependencies": {
+      "obsidian": "^0.12.0",
+      "typescript": "^4.0.0",
+      "jest": "^26.0.0",
+      "ts-jest": "^26.0.0"
+    },
+    "dependencies": {
+      // Add any runtime dependencies here if needed
+    }
+  }
+  
