@@ -74,13 +74,17 @@ var TextComposerPlugin = class extends import_obsidian.Plugin {
     return __async(this, null, function* () {
       const activeView = this.app.workspace.getActiveViewOfType(import_obsidian.MarkdownView);
       if (!activeView) {
-        new Notice("No active markdown view found");
+        new import_obsidian.Notice("No active markdown view found");
         return;
       }
       const editor = activeView.editor;
       const content = editor.getValue();
       const compiledContent = yield this.replaceLinks(content);
-      editor.setValue(compiledContent);
+      const currentFile = activeView.file;
+      const newFileName = currentFile.basename + "_compiled.md";
+      const newFilePath = currentFile.parent.path + "/" + newFileName;
+      yield this.app.vault.create(newFilePath, compiledContent);
+      new import_obsidian.Notice(`Compiled document created: ${newFilePath}`);
     });
   }
   replaceLinks(content) {

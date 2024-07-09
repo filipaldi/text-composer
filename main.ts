@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, MarkdownView } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, MarkdownView, Notice, TFile } from 'obsidian';
 
 interface TextComposerSettings {
 	defaultSetting: string;
@@ -45,7 +45,16 @@ export default class TextComposerPlugin extends Plugin {
 		const editor = activeView.editor;
 		const content = editor.getValue();
 		const compiledContent = await this.replaceLinks(content);
-		editor.setValue(compiledContent);
+
+		// Get the current file and generate the new file name
+		const currentFile = activeView.file;
+		const newFileName = currentFile.basename + '_compiled.md';
+		const newFilePath = currentFile.parent.path + '/' + newFileName;
+
+		// Create a new file with the compiled content
+		await this.app.vault.create(newFilePath, compiledContent);
+
+		new Notice(`Compiled document created: ${newFilePath}`);
 	}
 
 	async replaceLinks(content: string): Promise<string> {
