@@ -14,7 +14,8 @@
       "obsidian": "^0.12.0",
       "typescript": "^4.0.0",
       "jest": "^26.0.0",
-      "ts-jest": "^26.0.0"
+      "ts-jest": "^26.0.0",
+      "@types/jest": "^26.0.0"
     },
     "dependencies": {}
   }

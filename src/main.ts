@@ -1,4 +1,4 @@
-import { Plugin } from 'obsidian';
+import { Plugin, Notice } from 'obsidian';
 import { compileDocument } from './compiler';
 
 export default class MdCompilerPlugin extends Plugin {
@@ -10,7 +10,7 @@ export default class MdCompilerPlugin extends Plugin {
             callback: async () => {
                 const activeFile = this.app.workspace.getActiveFile();
                 if (activeFile) {
-                    const compiledContent = await compileDocument(activeFile.path);
+                    const compiledContent = await compileDocument(activeFile.path, this.app);
                     this.app.vault.modify(activeFile, compiledContent);
                 } else {
                     new Notice('No active markdown file found.');
