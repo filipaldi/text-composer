@@ -1,0 +1,11 @@
+{
+    "id": "obsidian-md-compiler",
+    "name": "Markdown Compiler",
+    "version": "1.0.0",
+    "minAppVersion": "0.12.0",
+    "description": "An Obsidian.md plugin that compiles a .md document from multiple documents linked using the ![[link_to_document]] syntax.",
+    "author": "Your Name",
+    "authorUrl": "https://yourwebsite.com",
+    "isDesktopOnly": false
+  }
+  
