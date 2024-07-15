@@ -42,18 +42,50 @@ __export(main_exports, {
   default: () => TextComposerPlugin
 });
 module.exports = __toCommonJS(main_exports);
+var import_obsidian2 = require("obsidian");
+
+// options.ts
 var import_obsidian = require("obsidian");
 var DEFAULT_SETTINGS = {
-  defaultSetting: "default"
+  exportDirectory: "/",
+  appendName: "_compiled",
+  shortcut: "Ctrl+Shift+C"
 };
-var TextComposerPlugin = class extends import_obsidian.Plugin {
+var TextComposerSettingTab = class extends import_obsidian.PluginSettingTab {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+  }
+  display() {
+    const { containerEl } = this;
+    containerEl.empty();
+    containerEl.createEl("h2", { text: "Text Composer Settings" });
+    new import_obsidian.Setting(containerEl).setName("Export Directory").setDesc("Set the directory where the compiled file will be exported").addText((text) => text.setPlaceholder("Enter export directory").setValue(this.plugin.settings.exportDirectory).onChange((value) => __async(this, null, function* () {
+      this.plugin.settings.exportDirectory = value;
+      yield this.plugin.saveSettings();
+    })));
+    new import_obsidian.Setting(containerEl).setName("Append Name").setDesc("Set the name to append to the compiled file").addText((text) => text.setPlaceholder("Enter append name").setValue(this.plugin.settings.appendName).onChange((value) => __async(this, null, function* () {
+      this.plugin.settings.appendName = value;
+      yield this.plugin.saveSettings();
+    })));
+    new import_obsidian.Setting(containerEl).setName("Shortcut").setDesc("Set the shortcut to run the plugin").addText((text) => text.setPlaceholder("Enter shortcut").setValue(this.plugin.settings.shortcut).onChange((value) => __async(this, null, function* () {
+      this.plugin.settings.shortcut = value;
+      yield this.plugin.saveSettings();
+    })));
+  }
+};
+
+// main.ts
+var TextComposerPlugin = class extends import_obsidian2.Plugin {
   onload() {
     return __async(this, null, function* () {
       yield this.loadSettings();
       this.addCommand({
         id: "compile-md-document",
         name: "Compile MD Document",
-        callback: () => this.compileDocument()
+        callback: () => this.compileDocument(),
+        hotkeys: [{ modifiers: ["Ctrl", "Shift"], key: "C" }]
+        // Default shortcut
       });
       this.addSettingTab(new TextComposerSettingTab(this.app, this));
     });
@@ -72,9 +104,9 @@ var TextComposerPlugin = class extends import_obsidian.Plugin {
   }
   compileDocument() {
     return __async(this, null, function* () {
-      const activeView = this.app.workspace.getActiveViewOfType(import_obsidian.MarkdownView);
+      const activeView = this.app.workspace.getActiveViewOfType(import_obsidian2.MarkdownView);
       if (!activeView) {
-        new import_obsidian.Notice("No active markdown view found");
+        new import_obsidian2.Notice("No active markdown view found");
         return;
       }
       const editor = activeView.editor;
@@ -82,13 +114,14 @@ var TextComposerPlugin = class extends import_obsidian.Plugin {
       const compiledContent = yield this.replaceLinks(content);
       const currentFile = activeView.file;
       if (currentFile) {
-        const newFileName = currentFile.basename + "_compiled.md";
-        const parentPath = currentFile.parent ? currentFile.parent.path : "";
-        const newFilePath = parentPath + "/" + newFileName;
-        yield this.app.vault.create(newFilePath, compiledContent);
-        new import_obsidian.Notice(`Compiled document created: ${newFilePath}`);
+        const newFileName = currentFile.basename + this.settings.appendName + ".md";
+        const newFilePath = this.settings.exportDirectory + "/" + newFileName;
+        const newFile = yield this.app.vault.create(newFilePath, compiledContent);
+        const leaf = this.app.workspace.splitActiveLeaf();
+        yield leaf.openFile(newFile);
+        new import_obsidian2.Notice(`Compiled document created and opened: ${newFilePath}`);
       } else {
-        new import_obsidian.Notice("No current file found");
+        new import_obsidian2.Notice("No current file found");
       }
     });
   }
@@ -108,21 +141,6 @@ var TextComposerPlugin = class extends import_obsidian.Plugin {
       }
       return result;
     });
-  }
-};
-var TextComposerSettingTab = class extends import_obsidian.PluginSettingTab {
-  constructor(app, plugin) {
-    super(app, plugin);
-    this.plugin = plugin;
-  }
-  display() {
-    const { containerEl } = this;
-    containerEl.empty();
-    containerEl.createEl("h2", { text: "Text Composer Settings" });
-    new import_obsidian.Setting(containerEl).setName("Default Setting").setDesc("A default setting for the plugin").addText((text) => text.setPlaceholder("Enter your setting").setValue(this.plugin.settings.defaultSetting).onChange((value) => __async(this, null, function* () {
-      this.plugin.settings.defaultSetting = value;
-      yield this.plugin.saveSettings();
-    })));
   }
 };
 // Annotate the CommonJS export names for ESM import in node:

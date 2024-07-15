@@ -1,12 +1,5 @@
 import { App, Plugin, PluginSettingTab, Setting, MarkdownView, Notice, TFile } from 'obsidian';
-
-interface TextComposerSettings {
-	defaultSetting: string;
-}
-
-const DEFAULT_SETTINGS: TextComposerSettings = {
-	defaultSetting: 'default'
-}
+import { TextComposerSettings, DEFAULT_SETTINGS, TextComposerSettingTab } from './options';
 
 export default class TextComposerPlugin extends Plugin {
 	settings: TextComposerSettings;
@@ -18,7 +11,8 @@ export default class TextComposerPlugin extends Plugin {
 		this.addCommand({
 			id: 'compile-md-document',
 			name: 'Compile MD Document',
-			callback: () => this.compileDocument()
+			callback: () => this.compileDocument(),
+			hotkeys: [{ modifiers: ["Ctrl", "Shift"], key: "C" }] // Default shortcut
 		});
 
 		// Add a settings tab
@@ -49,14 +43,17 @@ export default class TextComposerPlugin extends Plugin {
 		// Get the current file and generate the new file name
 		const currentFile = activeView.file;
 		if (currentFile) {
-			const newFileName = currentFile.basename + '_compiled.md';
-			const parentPath = currentFile.parent ? currentFile.parent.path : '';
-			const newFilePath = parentPath + '/' + newFileName;
+			const newFileName = currentFile.basename + this.settings.appendName + '.md';
+			const newFilePath = this.settings.exportDirectory + '/' + newFileName;
 
 			// Create a new file with the compiled content
-			await this.app.vault.create(newFilePath, compiledContent);
+			const newFile = await this.app.vault.create(newFilePath, compiledContent);
 
-			new Notice(`Compiled document created: ${newFilePath}`);
+			// Open the new file in a new tab
+			const leaf = this.app.workspace.splitActiveLeaf();
+			await leaf.openFile(newFile);
+
+			new Notice(`Compiled document created and opened: ${newFilePath}`);
 		} else {
 			new Notice('No current file found');
 		}
@@ -77,32 +74,5 @@ export default class TextComposerPlugin extends Plugin {
 			}
 		}
 		return result;
-	}
-}
-
-class TextComposerSettingTab extends PluginSettingTab {
-	plugin: TextComposerPlugin;
-
-	constructor(app: App, plugin: TextComposerPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
-
-	display(): void {
-		const { containerEl } = this;
-		containerEl.empty();
-
-		containerEl.createEl('h2', { text: 'Text Composer Settings' });
-
-		new Setting(containerEl)
-			.setName('Default Setting')
-			.setDesc('A default setting for the plugin')
-			.addText(text => text
-				.setPlaceholder('Enter your setting')
-				.setValue(this.plugin.settings.defaultSetting)
-				.onChange(async (value) => {
-					this.plugin.settings.defaultSetting = value;
-					await this.plugin.saveSettings();
-				}));
 	}
 }
