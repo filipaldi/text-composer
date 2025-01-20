@@ -1,34 +1,42 @@
 # Text Composer for Obsidian
 
 ## Description
-Text Composer is a powerful Obsidian plugin that allows you to compile multiple markdown documents into a single file. It seamlessly integrates content from linked documents using the `![[link_to_document]]` syntax, preserving the structure and hierarchy of your notes.
+When working with a larger text project, it is a good idea to split the text into smaller chunks - modules – for easier editing and maintenance. The native syntax for embedding files `![[link_to_document.md]]]` allows the text to split into smaller documents and preview the document as complete.
+Text Composer does the final job of compiling such embedded documents into a new single file. Easy!
 
-## Benefits and Why to Use It
-- **Streamlined Note Compilation**: Easily merge multiple linked documents into one comprehensive markdown file.
-- **Recursive Linking**: Handles nested links efficiently, ensuring all referenced content is included.
-- **Non-Intrusive**: Creates a new compiled document, leaving your original notes unchanged.
-- **Time-Saving**: Automates the process of gathering content from multiple documents, enhancing productivity.
 
-## Features
-- **Recursive Content Compilation**: Automatically includes content from nested linked documents.
-- **Non-Destructive**: Generates a new markdown file with the compiled content.
-- **User-Friendly Commands**: Easily trigger the compilation process using Obsidian’s command palette.
-- **Customizable Settings**: Configure plugin settings to suit your workflow.
+## How it works
+The plugin will recursively insert content of all linked documents into the compiled document.
+You can choose where to save the compiled document:
+- Default Directory: Uses the configured export directory in settings
+- Same Directory: Saves alongside the source document
+- Custom Directory: Lets you choose a directory each time you compile
 
 ## How to Use It
 1. **Install the Plugin**:
    - Ensure the plugin is installed and enabled in Obsidian. Navigate to **Settings** → **Community plugins** → **Text Composer** and enable it.
 
-2. **Prepare Your Documents**:
+2. **Configure Settings**:
+   - Go to **Settings** → **Text Composer**
+   - Choose your preferred default compilation mode
+   - Set the export directory for the default mode
+   - Configure other options like file name suffix and verbose mode
+
+3. **Prepare Your Documents**:
    - Create a main markdown document with links to other documents using the `![[link_to_document]]` syntax.
 
-3. **Compile the Document**:
-   - Open the main markdown document in Obsidian.
-   - Press `Ctrl + P` (or `Cmd + P` on macOS) to open the command palette.
-   - Type `Compile MD Document` and select the command.
-   - A new markdown file with the `_compiled.md` suffix will be created, containing the compiled content.
+4. **Compile the Document**:
+   You have several commands available:
+   - `Compile Document`: Uses your default compilation mode
+   - `Compile Document (Default Location)`: Always uses the configured export directory
+   - `Compile Document (Same Directory)`: Saves alongside the source document
+   - `Compile Document (Choose Directory)`: Prompts you to select a directory
 
-4. **Example**:
+   To run any command:
+   - Press `Ctrl + P` (or `Cmd + P` on macOS) to open the command palette
+   - Type part of the command name and select it
+
+5. **Example**:
    - **Main Document (`main_document.md`)**:
      ```markdown
      # Main Document
@@ -49,10 +57,7 @@ Text Composer is a powerful Obsidian plugin that allows you to compile multiple 
      Content from nested document B.
      ```
 
-   - After running the "Compile MD Document" command, a new file `main_document_compiled.md` will be created with the merged content.
-
-## Conclusion
-Text Composer for Obsidian is a must-have tool for users who need to consolidate their notes into a single document efficiently. By automating the integration of linked documents, it saves time and enhances productivity, making it an essential plugin for your Obsidian workflow.
+   - After running any of the compile commands, a new file will be created with the merged content in the selected location.
 
 
 ## License
